@@ -1,9 +1,9 @@
 
-# my weird, kinky, and not well-organized config files
+# My weird, kinky, and not well-organized config files
 
 ![thelookofit](https://user-images.githubusercontent.com/51455723/170556296-3d1d0a80-94d7-4b6b-b7e1-a505c0bbe10f.png)
 
-### contains config files for:
+### Contains config files for:
 - Zsh
 - Tmux
 - Micro
