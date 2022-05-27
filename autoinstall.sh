@@ -1,15 +1,21 @@
 #!/usr/bin/env bash
-echo "Be aware that running this script will destroy your existing setup (your .zshrc, neofetch config, gnome-terminal preferences, and so on) and will install ubuntu fonts, it's not made to be interactive, it's made to recreate my setup as simply as possible"
+# Colors
+RED='\033[1;31m'
+NC='\033[0m' 
+GRN='\033[0;32m'
+YLW='\033[0;33m'
+
+echo -e "${RED}Be aware${NC}
+Running this script will cause irreversible changes by replacing your existing configuration files, it's not made for everyone, it's made to recreate my setup as simply as possible.\n"
 read -p "Can i put my balls in your jaws? (y/n) " yn
 case $yn in
-	y )	repodir="$( dirname -- "$0"; )"
-		echo "Putting balls in your jaws"
+	[yY] )	repodir="$( dirname -- "$0"; )"
+		echo -e "\n${YLW}Putting balls in your jaws..."
 		cp -r $repodir/{Documents,.local,.config,.zshrc} $HOME
-		echo "Updating fonts"
+		echo -e "${YLW}Updating fonts..."
 		fc-cache -f
-		echo "Applying gnome-terminal settings"
+		echo -e "${YLW}Applying gnome-terminal settings..."
 		dconf load /org/gnome/terminal/legacy/ < $repodir/gnome-terminal.dconf
-		echo "Everything done, enjoy 🥒";;
-	n )	echo "Sadje :<";;
-	* )	echo "Sadje :<";;
+		echo -e "${GRN}Everything done, enjoy 🥒";;
+	* )	echo -e "${RED}Sadje :<";;
 esac
