@@ -8,12 +8,13 @@
 - Tmux
 - Micro
 - Neofetch
-
-### Dependendies
-Everything listed above except neofetch, i tried to integrate every software listed above one into another, like for example, tmux starts zsh, in zsh i have prompt built from only 1 symbol, the path that you see at the top of the zsh prompt is in fact handled by tmux itself.
+- Gnome-terminal
 
 ### Recommendations 
-It is better to use with any vte-based terminal emulator (gnome-terminal with ubuntu-mono fonts in my case), triangle symbols that i use for tabs look broken in other terminals, you can still change those symbols to your font-specific ones, so it may work as well in any other terminal, the reason why it's not done this way already is the fact that it requires nerd-fonts
+Before applying, make sure that you have all the software installed (zsh, tmux, and so on as listed above)
+i recommend putting those configs meaningfully and manually in places where they should be, instead of running installcript, running script will make irreversible changes and won't backup any existed configs for you
+
+In case you only want that tmux.conf, it is better to use with any vte-based terminal emulator (gnome-terminal with ubuntu-mono fonts in my case), triangle symbols that i use for tabs look broken in other terminals, you can still change those symbols to your font-specific ones, so it may work as well in any other terminal, the reason why it's not done this way already is the fact that it requires nerd-fonts
 
 ##
-###### *A lot of stuff here is mostly a result of my crappy copy-pasting pieces of .files made by other people, so don't expect .files to be well-organized inside.*
+###### *A lot of stuff here is mostly a result of my crappy copy-pasting pieces of .files made by other people, so don't expect anything to be well-organized inside*
