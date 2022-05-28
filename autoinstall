@@ -1,0 +1,68 @@
+#!/usr/bin/env bash
+# Set variables
+	# Source directory
+	repodir="$( dirname -- "$0"; )"
+	# Colors
+	RED='\033[1;31m'
+	NC='\033[0m' 
+	GRN='\033[0;32m'
+	YLW='\033[0;33m'
+
+# Functions
+	# Actual installation process
+	balls_rollout () 
+	{
+		echo -e "${YLW}Putting balls in your jaws..."
+		cp -r $repodir/{Documents,.local,.config,.zshrc} $HOME
+		echo -e "${YLW}Updating fonts..."
+		fc-cache -f
+		echo -e "${YLW}Applying gnome-terminal settings..."
+		dconf load /org/gnome/terminal/legacy/ < $repodir/gnome-terminal.dconf
+		echo -e "${GRN}Everything done, enjoy 🥒"
+	}
+
+	# Message to make everything clear for user
+	warn () 
+	{
+		echo -e "${RED}Be aware${NC}\nRunning this script will cause irreversible changes by replacing your existing configuration files, it's not made for everyone, it's made to recreate my setup as simply as possible.\n"
+	}
+
+	# Message for help option
+	help()
+	{
+	   echo -e "Without options this script will run interactively\nOptions:\n${GRN}-a${NC}\tFully automatic non-interactive setup (without warning and asking prompt)\n${GRN}-h${NC}\tWill show you this text"
+	}
+
+	# Interactive side
+	interactive-balls () 
+	{
+		warn
+		read -p "Can i put my balls in your jaws? (y/n) " yn
+		case $yn in
+			[yY] ) 
+					printf \\n
+					balls_rollout;;
+			* )	
+					echo -e "${RED}Sadje :<";;
+		esac
+	}
+
+# Running part of the script
+	# Act depending on option
+	while getopts ":ah" option; do
+		case $option in
+			a) 
+				balls_rollout
+				exit;;
+			h)
+				help
+				exit;;
+			\?)
+				echo -e "${RED}Invalid option${NC}\ntry ${GRN}autoinstall -h${NC} to get list of options"
+				exit;;
+
+		esac
+	done
+
+	# This part will run when no options set
+	interactive-balls
