@@ -1,62 +1,57 @@
-ZHOME=$HOME/.local/share/zsh/
-# Zsh theme (prompt)
-PROMPT='%(?.%F{green}>.%F{red}>)%f '
-# Path & fpath
-export PATH=$PATH:$HOME/.local/bin
-# The following lines were added by compinstall
-zstyle ':completion:*:matches'         group 'yes'
-zstyle ':completion:*'                 group-name ''
-zstyle ':completion:*' completer _expand _complete _ignored _approximate
-zstyle ':completion:*' list-colors ''
-zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
-zstyle ':completion:*' menu select=1
-zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p%s
-zstyle ':completion:*' rehash true
-#zstyle ':completion:*' completer _complete _ignored _files
-zstyle ':completion:*' list-dirs-first true
-zstyle :compinstall filename "$HOME/.zshrc"
-# Use zsh buitin completer
-autoload -Uz compinit
-compinit
-# Waiting dots, for "..." when slowly completing
-# http://stackoverflow.com/a/844299
-expand-or-complete-with-dots() {
-  echo -n "\e[31m...\e[0m"
-  zle expand-or-complete
-  zle redisplay
-}
-zle -N expand-or-complete-with-dots
-bindkey "^I" expand-or-complete-with-dots
-# History proporties
-HISTFILE=~/.bash_history
-# Note, saving zsh history in .bash_history may cause corrupted look when scrolling history insde bash
-HISTSIZE=1000
-SAVEHIST=1000
-# IDRK what lines below stands for
-setopt notify
-setopt complete_aliases
-setopt HIST_IGNORE_DUPS
-setopt share_history
-# Zle arrow-movement/etc
-bindkey "^[[1;5D" backward-word
-bindkey "^[[1;5C" forward-word
-# Export something-else/etc
-export EDITOR=micro
-# command-line Editor and the keybind to it (press ctrl+x and ctrl+e)
-autoload -U edit-command-line
-zle -N edit-command-line
-bindkey '^x^e' edit-command-line
+########################
+# Essential internals #
+#######################
 
-# Plugins
+# Home for plugins and other stuff, the main directory is used for essential/main parts, these parts will be loaded automatically by loadatstart function if they are named correctly, subdirectories are used for additional plugins, those plugins should be loaded manually by loadplug
+	ZHOME=$HOME/.local/share/zsh/
+
+# Functions
+	loadatstart () # Load any file with .zsh extension in $ZHOME root folder (files in subfolders are not included), used to load essential parts, to modify order of sourcing you should modify filenames in $ZHOME
+	{
+		for file in $ZHOME/*.zsh
+		do
+			source $file
+		done
+	}
+
+	loadplug () # To load plugins located in $ZHOME manually, used to load additional plugins from $ZHOME subfolders
+	{
+		local plug=("$@")
+		source $ZHOME/$plug
+	}
+
+	completions () # Bahaviour of completion system, declared as a function in order to manage order of loading in running part of the script.
+	{
+		zstyle ':completion:*:matches'         group 'yes'
+		zstyle ':completion:*'                 group-name ''
+		zstyle ':completion:*' completer _expand _complete _ignored _approximate
+		zstyle ':completion:*' list-colors ''
+		zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
+		zstyle ':completion:*' menu select=1
+		zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p%s
+		zstyle ':completion:*' rehash true
+		zstyle ':completion:*' list-dirs-first true
+		zstyle :compinstall filename "$HOME/.zshrc" 
+		autoload -Uz compinit
+		compinit
+		# The following lines were added by compinstall	
+	}
+
+#####################################################
+# The main, actually running part of this rc-script #
+#####################################################
+completions
+# Autumatically load essentials
+loadatstart
 # Addictional-completions (from bash)
-. $ZHOME/zsh-bash-completions-fallback/zsh-bash-completions-fallback.plugin.zsh
+loadplug zsh-bash-completions-fallback/zsh-bash-completions-fallback.plugin.zsh
 # Almostontop
-. $ZHOME/almostontop/almostontop.plugin.zsh
+loadplug almostontop/almostontop.plugin.zsh
 # Zsh-syntax-highlight
-. $ZHOME/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+loadplug zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 # Auto-notify
-. $ZHOME/zsh-auto-notify/auto-notify.plugin.zsh
+loadplug zsh-auto-notify/auto-notify.plugin.zsh
 # Fishlike search
-. $ZHOME/substring-search/zsh-history-substring-search.plugin.zsh
+loadplug substring-search/zsh-history-substring-search.plugin.zsh
 		bindkey '^[[A' history-substring-search-up
 		bindkey '^[[B' history-substring-search-down
