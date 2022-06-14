@@ -2,10 +2,10 @@
 # Essential internals #
 #######################
 
-# Home for plugins and other stuff, the main directory is used for essential/main parts, these parts will be loaded automatically by loadatstart function if they are named correctly, subdirectories are used for additional plugins, those plugins should be loaded manually by loadplug
+# Home for plugins and other stuff, the main directory is used for essential/main parts, these parts will be loaded automatically by loadatstart function if they are named correctly, subdirectories are used for additional plugins, these plugins should be loaded manually by loadplug
 	ZHOME=$HOME/.local/share/zsh/
 
-# Functions (note, you will see "unfunction funcname" at the end of every function that i decided to use only for initialization, those functions won't be available in interactive environments, they are used only once at shell startup)
+# Functions (note, you will see "unfunction funcname" at the end of every function that i decided to use only for initialization, these functions won't be available in interactive environments, they are used only once at shell startup)
 
 	function loadplug () # To load plugins located in $ZHOME manually, used to load additional plugins from $ZHOME subdirs
 	{
