@@ -5,22 +5,24 @@
 # Home for plugins and other stuff, the main directory is used for essential/main parts, these parts will be loaded automatically by loadatstart function if they are named correctly, subdirectories are used for additional plugins, those plugins should be loaded manually by loadplug
 	ZHOME=$HOME/.local/share/zsh/
 
-# Functions
-	loadatstart () # Load any file with .zsh extension in $ZHOME root folder (files in subfolders are not included), used to load essential parts, to modify order of sourcing you should modify filenames in $ZHOME
-	{
-		for file in $ZHOME/*.zsh
-		do
-			source $file
-		done
-	}
+# Functions (note, you will see "unfunction funcname" at the end of every function that i decided to use only for initialization, those functions won't be available in interactive environments, they are used only once at shell startup)
 
-	loadplug () # To load plugins located in $ZHOME manually, used to load additional plugins from $ZHOME subfolders
+	function loadplug () # To load plugins located in $ZHOME manually, used to load additional plugins from $ZHOME subdirs
 	{
 		local plug=("$@")
 		source $ZHOME/$plug
 	}
 
-	completions () # Bahaviour of completion system, declared as a function in order to manage order of loading in running part of the script.
+	function loadmain () # Load any file with .plugin.zsh extension in $ZHOME root dir (files in subdirs are not included), used to load essential parts, to modify order of sourcing you should modify filenames in $ZHOME
+	{
+		for file in $ZHOME/*.plugin.zsh
+		do
+			source $file
+		done
+		unfunction loadmain
+	}
+
+	function completions () # Bahaviour of completion system, declared as a function in order to manage order of loading in running part of the script, and i don't really want to separate that from main .zshrc file
 	{
 		zstyle ':completion:*:matches'         group 'yes'
 		zstyle ':completion:*'                 group-name ''
@@ -34,7 +36,7 @@
 		zstyle :compinstall filename "$HOME/.zshrc" 
 		autoload -Uz compinit
 		compinit
-		# The following lines were added by compinstall	
+		unfunction completions	
 	}
 
 #####################################################
@@ -42,7 +44,7 @@
 #####################################################
 completions
 # Autumatically load essentials
-loadatstart
+loadmain
 # Addictional-completions (from bash)
 loadplug zsh-bash-completions-fallback/zsh-bash-completions-fallback.plugin.zsh
 # Almostontop
