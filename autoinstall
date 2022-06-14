@@ -58,6 +58,9 @@
 	{
 		echo -e "${YLW}Applying gnome-terminal settings..."
 		dconf load /org/gnome/terminal/legacy/ < $repodir/gnome-terminal.dconf
+		cp /usr/share/applications/*gnome*?erminal*.desktop $HOME/.local/share/applications/
+		sed -i 's/Actions=new-window;preferences/Actions=new-window;new-session;preferences/' $HOME/.local/share/applications/*gnome*?erminal*.desktop
+		printf "\n[Desktop Action new-session]\nName=New Session\nExec=gnome-terminal -- tmux new\n" >> $HOME/.local/share/applications/*gnome*?erminal*.desktop
 	}
 
 	# Actual installation process
