@@ -1,5 +1,5 @@
 local char='>'
-if [[ "$HOSTNAME" == "toolbox" ]]
+if [[ "$container" != "" ]]
 then 
 	local char2="%K{magenta}%F{black} ⬣  %k%f"
 fi
