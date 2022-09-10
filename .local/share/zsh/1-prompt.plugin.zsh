@@ -15,7 +15,7 @@ then
 		esac
 		printf $logo
 	}
-	logo=$(getlogo)
+	local logo=$(getlogo)
 	local char2="%K{magenta}%F{black} $logo  %k%f"
 fi
 if [[ "$TMUX" == "" ]]
