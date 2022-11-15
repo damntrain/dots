@@ -2,18 +2,33 @@
 # Essential internals #
 #######################
 
-# Home for plugins and other stuff, the main directory is used for essential/main parts, these parts will be loaded automatically by loadatstart function if they are named correctly, subdirectories are used for additional plugins, these plugins should be loaded manually by loadplug
+# Home for plugins and other stuff
+# the main directory is used for essential/main parts
+# these parts will be loaded automatically by loadatstart function if they are 
+# named correctly
+# subdirectories are used for additional plugins
+# these plugins should be loaded manually by loadplug
 	ZHOME=$HOME/.local/share/zsh/
 
-# Functions (note, you will see "unfunction funcname" at the end of every function that i decided to use only for initialization, these functions won't be available in interactive environments, they are used only once at shell startup)
+# Functions 
+# (note, you will see "unfunction funcname" at the end of every function
+# that i decided to use only for initialization
+# these functions won't be available in interactive environments
+# they are used only once at shell startup)
 
-	function loadplug () # To load plugins located in $ZHOME manually, used to load additional plugins from $ZHOME subdirs
+	function loadplug () 
+#	To load plugins located in $ZHOME manually
+#	used to load additional plugins from $ZHOME subdirs
 	{
 		local plug=("$@")
 		source $ZHOME/$plug
 	}
 
-	function loadmain () # Load any file with .plugin.zsh extension in $ZHOME root dir (files in subdirs are not included), used to load essential parts, to modify order of sourcing you should modify filenames in $ZHOME
+	function loadmain () 
+# Load any file with .plugin.zsh extension in $ZHOME root dir
+# (files in subdirs are not included)
+# used to load essential parts
+# to modify order of sourcing you should modify filenames in $ZHOME
 	{
 		for file in $ZHOME/*.plugin.zsh
 		do
@@ -22,7 +37,10 @@
 		unfunction loadmain
 	}
 
-	function completions () # Bahaviour of completion system, declared as a function in order to manage order of loading in running part of the script, and i don't really want to separate that from main .zshrc file
+	function completions () 
+# Bahaviour of completion system
+# declared as a function in order to manage order of loading here in zshrc
+# and i don't really want to separate that from main .zshrc file
 	{
 		zstyle ':completion:*:matches'         group 'yes'
 		zstyle ':completion:*'                 group-name ''
