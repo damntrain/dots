@@ -17,8 +17,8 @@
 # they are used only once at shell startup)
 
 	function loadplug () 
-#	To load plugins located in $ZHOME manually
-#	used to load additional plugins from $ZHOME subdirs
+# To load plugins located in $ZHOME manually
+# used to load additional plugins from $ZHOME subdirs
 	{
 		local plug=("$@")
 		source $ZHOME/$plug
