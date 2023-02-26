@@ -7,36 +7,54 @@
 	NC='\033[0m' 
 	GRN='\033[0;32m'
 	YLW='\033[0;33m'
-	PRP='\033[0;35m'
+	PRP='\033[1;35m'
 
 # Functions
 	conprompt () # Confirmation prompt 
 	{
 		if [[ $int = 1 ]] # At this point, $int variable used for separating behaviour for interactive and non-interactive setups, keep in mind that this is not the only way i'm doing such separation, because i'm a dumbo.
 		then
-		echo -e "\nThere are still some software missing, you can continue anyway, but i recommend installing ${PRP}missing parts${NC}\n"
+		echo -e "${YLW}There are still some software missing\nI recommend installing ${RED}missing parts${YLW}\nBut you can continue anyway${NC}"
+		echo -e ${PRP}
 		read -p "Continue anyway? (y/n) " yn
+		echo -e ${NC}
 		case $yn in
 			[yY] ) 
-				printf "\n${GRN}Going further${NC}\n\n";;
+				true ;;
 			* )	
 				echo -e "${RED}Exiting${NC}"
 				exit;;
 		esac 
 		fi		
 	}
+
+	has() #checks if dependency is installed
+	{
+		type -p "$1" >/dev/null && dependency=$1;
+	}
+
 	# Balls parts
 	ball.pt0 () # Not made for non-interactive setup, that's why it won't be included in balls_rollout
 	{
-		echo -e "${YLW}Looking for desired dependencies..."
-		printf ${RED}
-		if hash {zsh,tmux,micro,gnome-terminal,neofetch}
-		then
-			printf "${GRN}Looks like you have everything needed${NC}\n"
-		else
-			printf "${PRP}\t\t\t\t^\n\t\t\tMissing parts${NC}\n"
-			conprompt
-		fi
+		echo -e "${YLW}Looking for desired dependencies...${NC}"
+		for i in {zsh,tmux,micro,gnome-terminal,neofetch} 
+		do
+			if has "$i"
+				then
+					have="$have $i"
+				else
+					missing="$missing $i"
+			fi
+		done
+		if [[ $missing < "?" ]]
+			then
+				true
+				echo -e "${GRN}Looks like you have everything needed${NC}"
+			else
+				false
+				echo -e "${RED}Missing parts:${NC}$missing"
+				conprompt
+		fi 
 						
 	}
 
@@ -44,14 +62,12 @@
 	{
 		echo -e "${YLW}Putting balls in your jaws..."
 		cp -r $repodir/{Documents,.config,.local,.zshrc} $HOME
-
 	}
 
 	ball.pt2 ()
 	{
 		echo -e "${YLW}Updating fonts..."
 		fc-cache -f
-
 	}
 
 	ball.pt3 () 
@@ -76,7 +92,7 @@
 	# Message to make everything clear for user
 	warn () 
 	{
-		echo -e "${RED}Be aware${NC}\nRunning this script will cause irreversible changes by replacing your existing configuration files, it's not made for everyone, it's made to recreate my setup as simply as possible.\n"
+		echo -e "${RED}Be aware${NC}\nRunning this script will cause irreversible changes\nIt will replace your existing configuration files\nIt's not made for everyone\nIt's made to recreate my setup as simply as possible."
 	}
 
 	# Message for help option
@@ -90,10 +106,11 @@
 	{
 		int=1
 		warn
+		echo -e ${PRP}
 		read -p "Can i put my balls in your jaws? (y/n) " yn
+		echo -e ${NC}
 		case $yn in
 			[yY] ) 
-					printf \\n
 					ball.pt0
 					balls_rollout;;
 			* )	
